@@ -1,0 +1,13 @@
+#!/bin/bash
+
+main() {
+  local selected
+  #fzf に --tac を入れた方がいいかも
+  #tree は -f オプションは外した方がいいかも
+  #fzf を fzf-tmux に変更するとペイン分割になるよ
+  selected=$(tree -CNf ${1:-.} | fzf --ansi --no-sort | awk '{print $NF}' | xargs echo)
+  [[ -d "$selected" ]] && echo "cd $selected" && cd $selected
+  [[ -f "$selected" ]] && open -a Visual\ Studio\ Code "${selected[@]}"
+}
+
+main $@
